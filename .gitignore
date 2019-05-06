@@ -103,6 +103,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.idea
 
 # Spyder project settings
 .spyderproject
@@ -121,3 +122,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+Будет удалено .idea/dbnavigator.xml
+Будет удалено .idea/misc.xml
+Будет удалено .idea/modules.xml
+Будет удалено .idea/storages_flask.iml
+Будет удалено .idea/workspace.xml
