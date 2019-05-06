@@ -6,6 +6,7 @@ from config import Config
 
 class TestConfig(Config):
     TESTING = True
+    # SQLALCHEMY_DATABASE_URI = Config.CLICKHOUSE_URI
 
 class UserModelCase(unittest.TestCase):
     def setUp(self):

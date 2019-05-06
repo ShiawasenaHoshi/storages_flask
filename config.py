@@ -22,8 +22,5 @@ class Config(object):
     TARANTOOL_USER = os.environ.get('TARANTOOL_USER') or 'tarantool'
     TARANTOOL_PASSWORD = os.environ.get('TARANTOOL_PASSWORD') or 'tarantool'
 
-    CLICKHOUSE_HOST = os.environ.get('CLICKHOUSE_HOST') or 'localhost'
-    CLICKHOUSE_PORT = os.environ.get('CLICKHOUSE_PORT') or '8123'
-    CLICKHOUSE_USER = os.environ.get('CLICKHOUSE_USER') or 'clickhouse'
-    CLICKHOUSE_PASSWORD = os.environ.get('CLICKHOUSE_PASSWORD') or 'clickhouse'
+    CLICKHOUSE_URI = os.environ.get('CLICKHOUSE_URI') or "clickhouse://default:@localhost:8123"
     
