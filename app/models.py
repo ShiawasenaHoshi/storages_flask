@@ -1,9 +1,12 @@
+from clickhouse_sqlalchemy import types, engines
+from sqlalchemy import Column
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import db
 
 
 class User(db.Model):
+    __bind_key__ = 'pgsql'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -17,3 +20,12 @@ class User(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+class Rate(db.Model):
+    __bind_key__ = 'clickhouse'
+    day = Column(types.Date, primary_key=True)
+    value = Column(types.Int32)
+
+    __table_args__ = (
+        engines.Memory(),
+    )

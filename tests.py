@@ -1,23 +1,28 @@
 import unittest
+from datetime import date, timedelta
+
+from sqlalchemy import MetaData
+from sqlalchemy.orm import sessionmaker
 
 from app import db, create_app
-from app.models import User
+from app.models import User, Rate
 from config import Config
+
 
 class TestConfig(Config):
     TESTING = True
-    # SQLALCHEMY_DATABASE_URI = Config.CLICKHOUSE_URI
+
 
 class UserModelCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app(TestConfig)
         self.app_context = self.app.app_context()
         self.app_context.push()
-        db.create_all()
+        db.create_all(bind='pgsql')
 
     def tearDown(self):
         db.session.remove()
-        db.drop_all()
+        db.drop_all(bind='pgsql')
         self.app_context.pop()
 
     def test_password_hashing(self):
@@ -33,6 +38,31 @@ class UserModelCase(unittest.TestCase):
         u4 = User(username='david', email='david@example.com')
         db.session.add_all([u1, u2, u3, u4])
         db.session.commit()
+
+
+class RateModelCase(unittest.TestCase):
+    def setUp(self):
+        self.app = create_app(TestConfig)
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+        db.create_all(bind='clickhouse')
+
+    def test_insert_rate(self):
+        today = date.today()
+        rates = [Rate(day=today - timedelta(i), value=200 - i) for i in range(100)]
+        db.session.add_all(rates)
+        db.session.commit()
+
+    def tearDown(self):
+        #todo workaround for clickhouse + sqlalchemy https://github.com/xzkostyan/clickhouse-sqlalchemy/issues/22
+        ch = db.make_connector(self.app, bind='clickhouse').get_engine()
+        Session = sessionmaker(ch)
+        session = Session()
+        meta = MetaData(ch, reflect=True)
+        for table in reversed(meta.sorted_tables):
+            session.execute("drop table " + table.name)
+        self.app_context.pop()
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
