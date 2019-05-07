@@ -13,10 +13,10 @@ docker run -d --name clickhouse --ulimit nofile=262144:262144 -p 8123:8123 yande
 docker run --name tarantool -d -p 3301:3301 tarantool/tarantool:1
 ```
 ## Links
-https://blog.magazov.com/clickhouse-intellij-idea/
+- [clickhouse db explorer in Idea](https://blog.magazov.com/clickhouse-intellij-idea/) 
 
-https://github.com/xzkostyan/clickhouse-sqlalchemy
+- [clickhouse-sqlalchemy package](https://github.com/xzkostyan/clickhouse-sqlalchemy) 
 
-https://flask-appbuilder.readthedocs.io/en/latest/multipledbs.html
+- [multiple dbs in sqlalchemy](https://flask-appbuilder.readthedocs.io/en/latest/multipledbs.html) 
 
-https://github.com/xzkostyan/clickhouse-sqlalchemy/issues/22 sqlalchemy+clickhouse create/drop table bug 
+- [sqlalchemy+clickhouse create/drop table bug](https://github.com/xzkostyan/clickhouse-sqlalchemy/issues/22)  
