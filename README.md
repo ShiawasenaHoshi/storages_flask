@@ -25,7 +25,7 @@ docker exec -i -t tarantool console
 
 tarantool.sock>
 ```
-before run
+before run tests
 ```bash
 s = box.schema.space.create('place')
 s:format({{name = 'code', type = 'string'},{name = 'name', type = 'string'}})
