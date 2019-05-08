@@ -9,8 +9,6 @@ load_dotenv(os.path.join(basedir, '.env'))
 class Config(object):
     TARANTOOL_HOST = os.environ.get('TARANTOOL_HOST') or 'localhost'
     TARANTOOL_PORT = os.environ.get('TARANTOOL_PORT') or '3301'
-    TARANTOOL_USER = os.environ.get('TARANTOOL_USER') or 'tarantool'
-    TARANTOOL_PASSWORD = os.environ.get('TARANTOOL_PASSWORD') or 'tarantool'
 
     POSTGRES_URI = os.environ.get('POSTGRES_URI') or 'postgres://postgres:postgres@localhost:5432/postgres'
     CLICKHOUSE_URI = os.environ.get('CLICKHOUSE_URI') or "clickhouse://default:@localhost:8123"
