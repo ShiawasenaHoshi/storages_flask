@@ -1,11 +1,11 @@
 import unittest
-from datetime import date, timedelta
+from datetime import timedelta, date
 
 from sqlalchemy import MetaData
 from sqlalchemy.orm import sessionmaker
 
-from app import db, create_app
-from app.models import User, Rate
+from app import create_app, db
+from app.models import Place, User, Rate
 from config import Config
 
 
@@ -54,7 +54,7 @@ class RateModelCase(unittest.TestCase):
         db.session.commit()
 
     def tearDown(self):
-        #todo workaround for clickhouse + sqlalchemy https://github.com/xzkostyan/clickhouse-sqlalchemy/issues/22
+        # todo workaround for clickhouse + sqlalchemy https://github.com/xzkostyan/clickhouse-sqlalchemy/issues/22
         ch = db.make_connector(self.app, bind='clickhouse').get_engine()
         Session = sessionmaker(ch)
         session = Session()
@@ -62,6 +62,25 @@ class RateModelCase(unittest.TestCase):
         for table in reversed(meta.sorted_tables):
             session.execute("drop table " + table.name)
         self.app_context.pop()
+
+
+class PlaceModelCase(unittest.TestCase):
+    def setUp(self):
+        self.app = create_app(TestConfig)
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+
+    def tearDown(self):
+        self.app_context.pop()
+
+    def test_crud(self):
+        place1 = Place("USA", "United states of America")
+        place1.save()
+        place_found = Place.search("USA")
+        self.assertEqual(place1, place_found)
+        Place.delete(place1)
+        place_not_found = Place.search("USA")
+        self.assertIsNone(place_not_found)
 
 
 if __name__ == '__main__':
