@@ -1,6 +1,4 @@
-box.cfg {
-    listen = '3301'
-}
+box.cfg {}
 
 box.once('v1', function()
     local s = box.schema.space.create('place')

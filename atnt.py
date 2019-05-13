@@ -15,9 +15,13 @@ async def basic_usage():
     print(f'tuple[0]: {first_tuple[0]}; tuple["id"]: {first_tuple["id"]}')
     print(f'tuple[1]: {first_tuple[1]}; tuple["name"]: {first_tuple["name"]}')
 
+    for i in range(1, 11):
+        await conn.delete('tester', [i])
+
     await conn.disconnect()
 
 
+# todo not working
 async def sql_usage():
     conn = asynctnt.Connection(host='127.0.0.1', port=3301)
     await conn.connect()

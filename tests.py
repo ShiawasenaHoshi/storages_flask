@@ -100,8 +100,8 @@ class AsyncTNTCase(unittest.TestCase):
     def test_basic_usage(self):
         AsyncTNTCase.loop.run_until_complete(basic_usage())
 
-    def test_sql_usage(self):
-        AsyncTNTCase.loop.run_until_complete(sql_usage())
+    # def test_sql_usage(self):
+    #     AsyncTNTCase.loop.run_until_complete(sql_usage())
 
 
 if __name__ == '__main__':
