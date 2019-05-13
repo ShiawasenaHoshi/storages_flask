@@ -8,22 +8,21 @@ box.once('v1', function()
         { name = 'code', type = 'string' },
         { name = 'name', type = 'string' },
     })
-    s:create_index('primary', {type = 'hash',parts = {'code'}})
-end)
+    s:create_index('primary', { type = 'hash', parts = { 'code' } })
 
-box.once('v1', function()
-    box.schema.user.grant('guest', 'read,write,execute', 'universe')
+    local t = box.schema.space.create('tester')
+    t:format({
+        { name = 'id', type = 'unsigned' },
+        { name = 'name', type = 'string' },
+    })
+    t:create_index('primary')
 
-    box.sql.execute([[
-        create table users (
-            id int primary key,
-            name text
-        )
-    ]])
-end)
-
-box.once('v1', function()
-    box.schema.user.grant('guest', 'read,write,execute', 'universe')
+    local u = box.schema.space.create('users')
+    u:format({
+        { name = 'id', type = 'unsigned' },
+        { name = 'name', type = 'string' },
+    })
+    u:create_index('primary')
 end)
 
 queue = require('queue')
