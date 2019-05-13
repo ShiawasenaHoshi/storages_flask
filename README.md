@@ -1,5 +1,7 @@
 # Three storages in flask: pgsql, clickhouse, tarantool
 
+Asynctnt not integrated with flask
+
 ## Code init
 ```bash
 python3 -m venv venv
