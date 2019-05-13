@@ -1,3 +1,4 @@
+import asyncio
 import unittest
 from datetime import timedelta, date
 
@@ -6,7 +7,9 @@ from sqlalchemy.orm import sessionmaker
 
 from app import create_app, db
 from app.models import Place, User, Rate
+from atnt import queue_usage
 from config import Config
+
 
 
 class TestConfig(Config):
@@ -81,6 +84,16 @@ class PlaceModelCase(unittest.TestCase):
         Place.delete(place1)
         place_not_found = Place.search("USA")
         self.assertIsNone(place_not_found)
+
+
+class AsyncTNTCase(unittest.TestCase):
+    loop = asyncio.get_event_loop()
+
+    def tearDown(self):
+        self.loop.close()
+
+    def test_queue(self):
+        self.loop.run_until_complete(queue_usage())
 
 
 if __name__ == '__main__':
