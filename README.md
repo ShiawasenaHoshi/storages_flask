@@ -11,29 +11,12 @@ For the first time
 ```bash
 docker run --name postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
 docker run -d --name clickhouse --ulimit nofile=262144:262144 -p 8123:8123 yandex/clickhouse-server
-docker run --name tarantool -d -p 3301:3301 tarantool/tarantool:1
+docker run --name tarantool -p 3301:3301 -d -v /path/to/project/storages_flask:/opt/tarantool tarantool/tarantool tarantool /opt/tarantool/tnt_conf.lua
 ```
 stop/start after
 ```bash
 docker stop postgres clickhouse tarantool
 docker start postgres clickhouse tarantool
-```
-
-## Preparing tarantool
-```bash
-docker exec -i -t tarantool console
-
-tarantool.sock>
-```
-before run tests
-```bash
-s = box.schema.space.create('place')
-s:format({{name = 'code', type = 'string'},{name = 'name', type = 'string'}})
-s:create_index('primary', {type = 'hash',parts = {'code'}})
-```
-after
-```bash
-box.space.place:drop()
 ```
 
 ## Links
