@@ -7,9 +7,8 @@ from sqlalchemy.orm import sessionmaker
 
 from app import create_app, db
 from app.models import Place, User, Rate
-from atnt import queue_usage
+from atnt import queue_usage, basic_usage, sql_usage
 from config import Config
-
 
 
 class TestConfig(Config):
@@ -87,13 +86,22 @@ class PlaceModelCase(unittest.TestCase):
 
 
 class AsyncTNTCase(unittest.TestCase):
-    loop = asyncio.get_event_loop()
+    @classmethod
+    def setUpClass(cls):
+        cls.loop = asyncio.get_event_loop()
 
-    def tearDown(self):
-        self.loop.close()
+    @classmethod
+    def tearDownClass(cls):
+        cls.loop.close()
 
     def test_queue(self):
-        self.loop.run_until_complete(queue_usage())
+        AsyncTNTCase.loop.run_until_complete(queue_usage())
+
+    def test_basic_usage(self):
+        AsyncTNTCase.loop.run_until_complete(basic_usage())
+
+    def test_sql_usage(self):
+        AsyncTNTCase.loop.run_until_complete(sql_usage())
 
 
 if __name__ == '__main__':
