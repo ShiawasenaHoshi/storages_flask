@@ -34,4 +34,8 @@ docker start postgres clickhouse tarantool
 
 - [useless tarantool python connector manual (data types not found, wrong library interface)](https://tarantool-python.readthedocs.io/en/latest/quick-start.en.html)
 
-- [python tarantool queue](https://github.com/tarantool/queue-python)
+- [asynctnt - fast python lib, but examples not worked for me out of the box](https://github.com/igorcoding/asynctnt)
+
+- [python tarantool queue based on asynctnt](https://github.com/tarantool/queue-python)
+
+- [Idea+lua+tarantool](https://www.tarantool.io/ru/doc/1.10/book/app_server/using_ide/)
