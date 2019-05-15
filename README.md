@@ -22,6 +22,10 @@ docker start postgres clickhouse tarantool
 ```
 
 ## Links
+- [Flask mega-tutorial](https://courses.miguelgrinberg.com/p/flask-mega-tutorial)
+
+- [Flask mega-tutorial in russian](https://habr.com/ru/post/346306/)
+
 - [clickhouse db explorer in Idea](https://blog.magazov.com/clickhouse-intellij-idea/) 
 
 - [clickhouse-sqlalchemy package](https://github.com/xzkostyan/clickhouse-sqlalchemy) 
