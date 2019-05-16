@@ -1,3 +1,4 @@
+#from https://github.com/igorcoding/asynctnt and https://github.com/tarantool/queue-python
 import asynctnt
 import asynctnt_queue
 

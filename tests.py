@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 
 from app import create_app, db
 from app.models import Place, User, Rate
-from atnt import queue_usage, basic_usage, sql_usage
+from atnt import queue_usage, basic_usage
 from config import Config
 
 
@@ -15,23 +15,25 @@ class TestConfig(Config):
     TESTING = True
 
 
-class UserModelCase(unittest.TestCase):
+class Case(unittest.TestCase):
     def setUp(self):
         self.app = create_app(TestConfig)
         self.app_context = self.app.app_context()
         self.app_context.push()
+
+    def tearDown(self):
+        self.app_context.pop()
+
+
+class UserModelCase(Case):
+    def setUp(self):
+        super(self.__class__, self).setUp()
         db.create_all(bind='pgsql')
 
     def tearDown(self):
         db.session.remove()
         db.drop_all(bind='pgsql')
-        self.app_context.pop()
-
-    def test_password_hashing(self):
-        u = User(username='susan')
-        u.set_password('cat')
-        self.assertFalse(u.check_password('dog'))
-        self.assertTrue(u.check_password('cat'))
+        super(self.__class__, self).tearDown()
 
     def test_add_users(self):
         u1 = User(username='john', email='john@example.com')
@@ -42,11 +44,9 @@ class UserModelCase(unittest.TestCase):
         db.session.commit()
 
 
-class RateModelCase(unittest.TestCase):
+class RateModelCase(Case):
     def setUp(self):
-        self.app = create_app(TestConfig)
-        self.app_context = self.app.app_context()
-        self.app_context.push()
+        super(self.__class__, self).setUp()
         db.create_all(bind='clickhouse')
 
     def test_insert_rate(self):
@@ -63,18 +63,10 @@ class RateModelCase(unittest.TestCase):
         meta = MetaData(ch, reflect=True)
         for table in reversed(meta.sorted_tables):
             session.execute("drop table " + table.name)
-        self.app_context.pop()
+        super(self.__class__, self).tearDown()
 
 
-class PlaceModelCase(unittest.TestCase):
-    def setUp(self):
-        self.app = create_app(TestConfig)
-        self.app_context = self.app.app_context()
-        self.app_context.push()
-
-    def tearDown(self):
-        self.app_context.pop()
-
+class PlaceModelCase(Case):
     def test_crud(self):
         place1 = Place("USA", "United states of America")
         place1.save()
@@ -100,8 +92,8 @@ class AsyncTNTCase(unittest.TestCase):
     def test_basic_usage(self):
         AsyncTNTCase.loop.run_until_complete(basic_usage())
 
-    # def test_sql_usage(self):
-    #     AsyncTNTCase.loop.run_until_complete(sql_usage())
+        # def test_sql_usage(self):
+        #     AsyncTNTCase.loop.run_until_complete(sql_usage())
 
 
 if __name__ == '__main__':

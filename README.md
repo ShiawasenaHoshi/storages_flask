@@ -10,7 +10,7 @@ pip install -r requirements.txt
 ```
 ## Containers
 ```bash
-docker run -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
+docker run -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres 
 docker run -d --ulimit nofile=262144:262144 -p 8123:8123 yandex/clickhouse-server
 docker run -p 3301:3301 -d -v /path/to/project/storages_flask:/opt/tarantool tarantool/tarantool tarantool /opt/tarantool/tnt_conf.lua
 ```
